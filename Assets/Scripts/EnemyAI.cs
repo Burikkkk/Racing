@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-
     [SerializeField] private float nextPointMargin;
     [SerializeField] private TrackWaypoints trackWaypoints;
-    
-    
+
+
+    private float torqueMultiplier = 1.0f;
     private int currentWaypoint = 0;
     private EnemyInputHandler inputHandler;
     private Transform target;
@@ -31,7 +32,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         inputHandler.Horizontal = AngleToTarget();
-        inputHandler.Vertical = 1f;
+        inputHandler.Vertical = torqueMultiplier;
     }
 
     private float AngleToTarget()
@@ -47,5 +48,16 @@ public class EnemyAI : MonoBehaviour
         // local global???
         Vector3 distance = transform.position - target.position;
         return distance.magnitude;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("EnemyTrigger"))
+        {
+            
+            var trigger = other.gameObject.GetComponent<EnemyTrigger>();
+            torqueMultiplier = trigger.TorqueMultiplier;
+            inputHandler.Handbrake = trigger.Braking;
+        }
     }
 }

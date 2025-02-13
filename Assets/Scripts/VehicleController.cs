@@ -51,10 +51,18 @@ public class VehicleController : MonoBehaviour
                 wheel.brakeTorque = 0.0f;
             }
             else if(inputHandler.Vertical < 0 && direction.z > 0 ||
-                inputHandler.Vertical > 0 && direction.z < 0 ||
-                inputHandler.Handbrake)   // changing direction / braking
+                inputHandler.Vertical > 0 && direction.z < 0)   // changing direction
             {
                 wheel.brakeTorque = breakForce;
+            }
+
+            if(inputHandler.Handbrake)
+            {
+                wheel.brakeTorque = breakForce;
+            }
+            else
+            {
+                wheel.brakeTorque = 0.0f;
             }
         }
     }
