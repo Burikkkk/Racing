@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class VehicleController : MonoBehaviour
 {
-    [SerializeField] private float torque;
-    [SerializeField] private float steeringMaxAngle;
-    [SerializeField] private float downforce;
-    [SerializeField] private float breakForce;
+    [SerializeField] private float torque; // крутящий момент
+    [SerializeField] private float steeringMaxAngle; // поворот колес
+    [SerializeField] private float downforce; // прижимает машину к земле, увеличивается со скоростью
+    [SerializeField] private float breakForce; //торможение
     [SerializeField] private WheelCollider[] frontWheelsColliders;
     [SerializeField] private WheelCollider[] rearWheelsColliders;
     [SerializeField] private GameObject[] frontWheelsMeshes;
@@ -20,7 +20,7 @@ public class VehicleController : MonoBehaviour
     void Start()
     {
         inputHandler = GetComponent<InputHandler>();
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>(); //силы, физика
     }
 
   
@@ -36,24 +36,24 @@ public class VehicleController : MonoBehaviour
 
     private void MoveVehicle()
     {
-        foreach (var wheel in rearWheelsColliders)
+        foreach (var wheel in rearWheelsColliders) //задний привод
         {
-            Vector3 direction = transform.InverseTransformDirection(rb.velocity).normalized;
+            Vector3 direction = transform.InverseTransformDirection(rb.velocity).normalized; //нормализация вектора скорорсти [-1;1] по z
 
-            if (inputHandler.Vertical > 0 && direction.z > 0) //moving forward
+            if (inputHandler.Vertical > 0 && direction.z > 0) //движение вперед
             {
-                wheel.motorTorque = torque * inputHandler.Vertical;
+                wheel.motorTorque = torque * inputHandler.Vertical; 
                 wheel.brakeTorque = 0.0f;
             }
-            else if(inputHandler.Vertical < 0 && direction.z < 0) //moving backwards
+            else if(inputHandler.Vertical < 0 && direction.z < 0) //движение назад
             {
                 wheel.motorTorque = torque * 0.7f * inputHandler.Vertical;
                 wheel.brakeTorque = 0.0f;
             }
             else if(inputHandler.Vertical < 0 && direction.z > 0 ||
-                inputHandler.Vertical > 0 && direction.z < 0)   // changing direction
+                inputHandler.Vertical > 0 && direction.z < 0)   // изменение направления
             {
-                wheel.brakeTorque = breakForce;
+                wheel.brakeTorque = breakForce; //торможение
             }
 
             if(inputHandler.Handbrake)
@@ -71,17 +71,17 @@ public class VehicleController : MonoBehaviour
     {
         foreach (var wheel in frontWheelsColliders)
         {
-            wheel.steerAngle = steeringMaxAngle * inputHandler.Horizontal;
+            wheel.steerAngle = steeringMaxAngle * inputHandler.Horizontal; //поворот колес
         }
     }
 
     private void AddDownforce()
     {
-        rb.AddForce(-transform.up * downforce * rb.velocity.magnitude);
+        rb.AddForce(-transform.up * downforce * rb.velocity.magnitude);//хз.
     }
 
     // add ackerman
-    private void SpinWheels()
+    private void SpinWheels() //вращение колес
     {
         Vector3 wheelPosition;
         Quaternion wheelRotation;
@@ -89,7 +89,7 @@ public class VehicleController : MonoBehaviour
         for(int i = 0; i < frontWheelsMeshes.Length; i++)
         {
             var wheel = frontWheelsMeshes[i];
-            frontWheelsColliders[i].GetWorldPose(out wheelPosition, out wheelRotation);
+            frontWheelsColliders[i].GetWorldPose(out wheelPosition, out wheelRotation); //движение модели за колайдером
             wheel.transform.rotation = wheelRotation;
             wheel.transform.position= wheelPosition;
         }
