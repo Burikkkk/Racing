@@ -10,6 +10,6 @@ public class PlayerInputHandler : InputHandler
     {
         vertical = Input.GetAxis("Vertical");
         horizontal = Input.GetAxis("Horizontal");
-        handbrake = Input.GetKey(KeyCode.Space) == true? 1 : 0;
+        handbrake = Input.GetKey(KeyCode.Space);
     }
 }

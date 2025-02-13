@@ -27,6 +27,7 @@ public class VehicleController : MonoBehaviour
     void FixedUpdate()
     {
         MoveVehicle();
+        //Debug.Log();
         SteerVehicle();
         AddDownforce();
         SpinWheels();
@@ -37,8 +38,24 @@ public class VehicleController : MonoBehaviour
     {
         foreach (var wheel in rearWheelsColliders)
         {
-            wheel.motorTorque = torque * inputHandler.Vertical;
-            wheel.brakeTorque = breakForce * inputHandler.Handbrake;
+            Vector3 direction = transform.InverseTransformDirection(rb.velocity).normalized;
+
+            if (inputHandler.Vertical > 0 && direction.z > 0) //moving forward
+            {
+                wheel.motorTorque = torque * inputHandler.Vertical;
+                wheel.brakeTorque = 0.0f;
+            }
+            else if(inputHandler.Vertical < 0 && direction.z < 0) //moving backwards
+            {
+                wheel.motorTorque = torque * 0.7f * inputHandler.Vertical;
+                wheel.brakeTorque = 0.0f;
+            }
+            else if(inputHandler.Vertical < 0 && direction.z > 0 ||
+                inputHandler.Vertical > 0 && direction.z < 0 ||
+                inputHandler.Handbrake)   // changing direction / braking
+            {
+                wheel.brakeTorque = breakForce;
+            }
         }
     }
 

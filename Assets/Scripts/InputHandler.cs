@@ -6,7 +6,7 @@ public class InputHandler : MonoBehaviour
 {
     [SerializeField] protected float vertical = 0.0f;
     [SerializeField] protected float horizontal = 0.0f;
-    [SerializeField] protected int handbrake = 0;
+    [SerializeField] protected bool handbrake = false;
 
     public float Vertical
     {
@@ -18,7 +18,7 @@ public class InputHandler : MonoBehaviour
         get { return horizontal; }
     }
 
-    public int Handbrake
+    public bool Handbrake
     {
         get { return handbrake; }
     }

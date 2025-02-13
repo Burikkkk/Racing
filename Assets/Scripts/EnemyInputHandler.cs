@@ -16,7 +16,7 @@ public class EnemyInputHandler : InputHandler
         set { horizontal = value; }
     }
 
-    public int Handbrake
+    public bool Handbrake
     {
         get { return handbrake; }
         set { handbrake = value; }
