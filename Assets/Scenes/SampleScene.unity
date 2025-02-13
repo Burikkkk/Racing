@@ -794,10 +794,10 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteSlip: 0.7
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -970,10 +970,10 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteSlip: 0.7
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -1064,10 +1064,10 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteSlip: 0.7
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -1112,6 +1112,7 @@ GameObject:
   - component: {fileID: 2792218741905966092}
   - component: {fileID: 7495443279247205796}
   - component: {fileID: 7495443279247205797}
+  - component: {fileID: 7495443279247205798}
   m_Layer: 0
   m_Name: Free Racing Car
   m_TagString: Untagged
@@ -1238,10 +1239,10 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteSlip: 0.7
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -1406,7 +1407,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &7495443279247205797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1419,7 +1420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 066b666db648aaa41a0add86fa592ad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 400
+  torque: 1000
   steeringMaxAngle: 40
   frontWheelsColliders:
   - {fileID: 2716459193806277794}
@@ -1433,6 +1434,20 @@ MonoBehaviour:
   rearWheelsMeshes:
   - {fileID: 8288384950260173267}
   - {fileID: 4163942240425351890}
+--- !u!114 &7495443279247205798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3311311803242127030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9bd01003e3c2842800796236cb7205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vertical: 0
+  horizontal: 0
 --- !u!4 &7671413317529317984
 Transform:
   m_ObjectHideFlags: 0
