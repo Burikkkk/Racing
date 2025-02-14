@@ -620,8 +620,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 1000
-  steeringMaxAngle: 40
-  downforce: 50
+  steeringMaxAngle: 50
+  downforce: 100
   breakForce: 90000
   frontWheelsColliders:
   - {fileID: 739625306369765917}

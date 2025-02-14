@@ -26,16 +26,19 @@ public class Scene : MonoBehaviour
 
     public void SimpleTrack()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadSceneAsync(2);
     }
 
     public void HardTrack()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadSceneAsync(1);
     }
 
     public void Restart()
     {
-        SceneManager.LoadSceneAsync(0);
+        Time.timeScale = 1.0f;
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
     }
 }
