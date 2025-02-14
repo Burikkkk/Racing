@@ -1,30 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TrackWaypoints : MonoBehaviour
 {
     [SerializeField] private bool looped;
     [SerializeField] private Transform[] waypoints;
-    
+    [SerializeField] private GameObject checkpointPrefab;
+
+    private GameObject[] checkpoints;
+
     public Transform[] Waypoints 
     { 
         get { return waypoints; } 
     }
 
-    public int GetNextWaypoint(int currentWaypoint)
+    public int GetNextWaypoint(int currentWaypoint, VehicleController vehicle)
     {
         if(currentWaypoint < waypoints.Length - 1)
         {
+            if(vehicle.isPlayer)
+            {
+                SetCheckpoint(currentWaypoint, false);
+                SetCheckpoint(currentWaypoint + 1, true);
+            }
             return currentWaypoint + 1;
         }
         else if(looped)
         {
+            if (vehicle.isPlayer)
+            {
+                SetCheckpoint(currentWaypoint, false);
+                SetCheckpoint(0, true);
+            }
+            vehicle.AddLap();
             return 0;
         }
         else
         {
-            //end of route
+            vehicle.AddLap();
             return waypoints.Length - 1;
         }
     }
@@ -32,6 +47,24 @@ public class TrackWaypoints : MonoBehaviour
     private void Start()
     {
         waypoints = GetComponentsInChildren<Transform>();
+        GenerateCheckpoints();
+    }
+
+    private void GenerateCheckpoints()
+    {
+        checkpoints = new GameObject[waypoints.Length];
+        for(int i = 0; i < checkpoints.Length; i++)
+        {
+            var position = waypoints[i].position;
+            position.y += 5.0f;
+            checkpoints[i] = Instantiate(checkpointPrefab, position, Quaternion.identity, transform);
+            checkpoints[i].GetComponent<MeshRenderer>().enabled = false;
+        }
+    }
+
+    public void SetCheckpoint(int index, bool value)
+    {
+        checkpoints[index].GetComponent<MeshRenderer>().enabled = value;
     }
 
     private void OnDrawGizmos()

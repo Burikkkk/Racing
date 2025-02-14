@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public int laps;
+    public int lapsLeft;
     [SerializeField] public int trackNumber;
     [SerializeField] private float startCountdown;
     [SerializeField] private Timer gameTimer;
     [SerializeField] private VehicleController[] vehicles;
 
+    [SerializeField] private TMP_Text countdownText;
     [SerializeField] private TMP_Text gameTimerText;
     [SerializeField] private GameObject endPanel;
     [SerializeField] private TMP_Text bestTimeText;
     [SerializeField] private TMP_Text currentTimeText;
+    [SerializeField] private TMP_Text lapsLeftText;
 
 
     private Timer countdownTimer;
@@ -29,8 +33,14 @@ public class LevelManager : MonoBehaviour
     private void Update()
     {
         gameTimerText.text = Timer.ToText(gameTimer.Value);
+        lapsLeftText.text = "LAPS LEFT: " + lapsLeft;
+        
         if (countdownTimer != null && countdownTimer.Value < startCountdown)
+        {
+            int countdown = (int)(startCountdown - countdownTimer.Value) + 1;
+            countdownText.text = countdown.ToString();
             return;
+        }
 
         if (gameStarted)
             return;
@@ -48,6 +58,8 @@ public class LevelManager : MonoBehaviour
             vehicle.enabled = true;
         }
         gameStarted = true;
+        countdownText.text = "START!";
+        Destroy(countdownText.gameObject, 2);
     }
 
     public void FinishGame()
@@ -69,9 +81,9 @@ public class LevelManager : MonoBehaviour
                 bestTime = currentTime;
             }
         }
-        bestTimeText.text = Timer.ToText(bestTime);
-        currentTimeText.text = Timer.ToText(currentTime);
+        bestTimeText.text = "The best time on this track: " + Timer.ToText(bestTime);
+        currentTimeText.text = "Your time: " + Timer.ToText(currentTime);
         Time.timeScale = 0.0f;
-        //show menu
+
     }
 }

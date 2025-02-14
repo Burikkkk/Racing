@@ -6,31 +6,22 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] private float nextPointMargin;
-    [SerializeField] private TrackWaypoints trackWaypoints;
-
 
     private float torqueMultiplier = 1.0f;
-    private int currentWaypoint = 0;
     private EnemyInputHandler inputHandler;
+    private VehicleController vehicleController;
     private Transform target;
 
     private void Start()
     {
         inputHandler = GetComponent<EnemyInputHandler>();
-        target = trackWaypoints.Waypoints[currentWaypoint];
+        vehicleController = GetComponent<VehicleController>();
+        target = vehicleController.NextWaypoint;
     }
 
-    // will break on finish
     private void FixedUpdate()
     {
-        if(DistanceToTarget() < nextPointMargin)
-        {
-            currentWaypoint = trackWaypoints.GetNextWaypoint(currentWaypoint);
-            //destroy on end
-            target = trackWaypoints.Waypoints[currentWaypoint];
-        }
-
+        target = vehicleController.NextWaypoint;
         inputHandler.Horizontal = AngleToTarget();
         inputHandler.Vertical = torqueMultiplier;
     }
@@ -41,13 +32,6 @@ public class EnemyAI : MonoBehaviour
         relative = relative.normalized;
 
         return relative.x;
-    }
-
-    private float DistanceToTarget()
-    {
-        // local global???
-        Vector3 distance = transform.position - target.position;
-        return distance.magnitude;
     }
 
     private void OnTriggerEnter(Collider other)

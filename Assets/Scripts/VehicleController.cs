@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class VehicleController : MonoBehaviour
 {
@@ -12,10 +14,21 @@ public class VehicleController : MonoBehaviour
     [SerializeField] private WheelCollider[] rearWheelsColliders;
     [SerializeField] private GameObject[] frontWheelsMeshes;
     [SerializeField] private GameObject[] rearWheelsMeshes;
+    [SerializeField] private TrackWaypoints trackWaypoints;
+    [SerializeField] private float nextPointMargin;
+    public bool isPlayer = false;
 
     private InputHandler inputHandler;
     private Rigidbody rb;
+    private int lapsFinished;
+    private int currentWaypoint = 0;
+    private Transform nextWaypoint;
 
+
+    private void Awake()
+    {
+        nextWaypoint = trackWaypoints.Waypoints[currentWaypoint];
+    }
 
     void Start()
     {
@@ -27,6 +40,7 @@ public class VehicleController : MonoBehaviour
     void FixedUpdate()
     {
         MoveVehicle();
+        CheckWaypoints();
         //Debug.Log();
         SteerVehicle();
         AddDownforce();
@@ -38,23 +52,8 @@ public class VehicleController : MonoBehaviour
     {
         foreach (var wheel in rearWheelsColliders)
         {
-            Vector3 direction = transform.InverseTransformDirection(rb.velocity).normalized;
 
-            if (inputHandler.Vertical > 0 && direction.z > 0) //moving forward
-            {
-                wheel.motorTorque = torque * inputHandler.Vertical;
-                wheel.brakeTorque = 0.0f;
-            }
-            else if(inputHandler.Vertical < 0 && direction.z < 0) //moving backwards
-            {
-                wheel.motorTorque = torque * 0.7f * inputHandler.Vertical;
-                wheel.brakeTorque = 0.0f;
-            }
-            else if(inputHandler.Vertical < 0 && direction.z > 0 ||
-                inputHandler.Vertical > 0 && direction.z < 0)   // changing direction
-            {
-                wheel.brakeTorque = breakForce;
-            }
+            wheel.motorTorque = torque * inputHandler.Vertical;
 
             if(inputHandler.Handbrake)
             {
@@ -64,7 +63,56 @@ public class VehicleController : MonoBehaviour
             {
                 wheel.brakeTorque = 0.0f;
             }
+
+            //Vector3 direction = transform.InverseTransformDirection(rb.velocity).normalized;
+
+            //if (inputHandler.Vertical > 0 && direction.z > 0) //moving forward
+            //{
+            //    wheel.motorTorque = torque * inputHandler.Vertical;
+            //    wheel.brakeTorque = 0.0f;
+            //}
+            //else if(inputHandler.Vertical < 0 && direction.z < 0) //moving backwards
+            //{
+            //    wheel.motorTorque = torque * 0.7f * inputHandler.Vertical;
+            //    wheel.brakeTorque = 0.0f;
+            //}
+            //else if(inputHandler.Vertical < 0 && direction.z > 0 ||
+            //    inputHandler.Vertical > 0 && direction.z < 0)   // changing direction
+            //{
+            //    wheel.brakeTorque = breakForce;
+            //}
         }
+    }
+
+    private void CheckWaypoints()
+    {
+        if (DistanceToNextWaypoint() < nextPointMargin)
+        {
+            currentWaypoint = trackWaypoints.GetNextWaypoint(currentWaypoint, this);
+            nextWaypoint = trackWaypoints.Waypoints[currentWaypoint];
+        }
+    }
+
+    private float DistanceToNextWaypoint()
+    {
+        Vector3 distance = transform.position - nextWaypoint.position;
+        return distance.magnitude;
+    }
+
+    public Transform NextWaypoint
+    {
+        get { return nextWaypoint; }
+    }
+
+    public void AddLap()
+    {
+        Debug.Log("Here");
+        lapsFinished++;
+    }
+
+    public int LapsFinished
+    {
+        get { return lapsFinished; }
     }
 
     private void SteerVehicle()
@@ -80,7 +128,6 @@ public class VehicleController : MonoBehaviour
         rb.AddForce(-transform.up * downforce * rb.velocity.magnitude);
     }
 
-    // add ackerman
     private void SpinWheels()
     {
         Vector3 wheelPosition;
