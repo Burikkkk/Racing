@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyTrigger : MonoBehaviour
 {
-    [SerializeField] private float torqueMultiplier;
-    [SerializeField] private bool braking;
+    [SerializeField] private float torqueMultiplier; //ускорение
+    [SerializeField] private bool braking; //остановка
 
     public float TorqueMultiplier
     {

@@ -28,6 +28,11 @@ public class Timer : MonoBehaviour
         set { this.value = value; }
     }
 
+    public bool Active
+    { 
+        get { return active; }
+    }
+
     public void Activate()
     {
         active = true;

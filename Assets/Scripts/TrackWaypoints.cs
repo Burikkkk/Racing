@@ -57,14 +57,15 @@ public class TrackWaypoints : MonoBehaviour
         {
             var position = waypoints[i].position;
             position.y += 5.0f;
+           
             checkpoints[i] = Instantiate(checkpointPrefab, position, Quaternion.identity, transform);
-            checkpoints[i].GetComponent<MeshRenderer>().enabled = false;
+            checkpoints[i].SetActive(false);
         }
     }
 
     public void SetCheckpoint(int index, bool value)
     {
-        checkpoints[index].GetComponent<MeshRenderer>().enabled = value;
+        checkpoints[index].SetActive(value);
     }
 
     private void OnDrawGizmos()

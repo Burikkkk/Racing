@@ -6,10 +6,10 @@ using static UnityEngine.GraphicsBuffer;
 
 public class VehicleController : MonoBehaviour
 {
-    [SerializeField] private float torque;
-    [SerializeField] private float steeringMaxAngle;
-    [SerializeField] private float downforce;
-    [SerializeField] private float breakForce;
+    [SerializeField] private float torque; // крутящий момент
+    [SerializeField] private float steeringMaxAngle; // поворот колес
+    [SerializeField] private float downforce; // прижимает машину к земле, увеличивается со скоростью
+    [SerializeField] private float breakForce; //торможение
     [SerializeField] private WheelCollider[] frontWheelsColliders;
     [SerializeField] private WheelCollider[] rearWheelsColliders;
     [SerializeField] private GameObject[] frontWheelsMeshes;
@@ -18,9 +18,11 @@ public class VehicleController : MonoBehaviour
     [SerializeField] private float nextPointMargin;
     public bool isPlayer = false;
 
+
+
     private InputHandler inputHandler;
     private Rigidbody rb;
-    private int lapsFinished;
+    private int lapsFinished; //количество кругов
     private int currentWaypoint = 0;
     private Transform nextWaypoint;
 
@@ -40,7 +42,7 @@ public class VehicleController : MonoBehaviour
     void FixedUpdate()
     {
         MoveVehicle();
-        CheckWaypoints();
+        CheckWaypoints();   // проверка прохождения чекпоинта
         //Debug.Log();
         SteerVehicle();
         AddDownforce();
@@ -64,29 +66,13 @@ public class VehicleController : MonoBehaviour
                 wheel.brakeTorque = 0.0f;
             }
 
-            //Vector3 direction = transform.InverseTransformDirection(rb.velocity).normalized;
-
-            //if (inputHandler.Vertical > 0 && direction.z > 0) //moving forward
-            //{
-            //    wheel.motorTorque = torque * inputHandler.Vertical;
-            //    wheel.brakeTorque = 0.0f;
-            //}
-            //else if(inputHandler.Vertical < 0 && direction.z < 0) //moving backwards
-            //{
-            //    wheel.motorTorque = torque * 0.7f * inputHandler.Vertical;
-            //    wheel.brakeTorque = 0.0f;
-            //}
-            //else if(inputHandler.Vertical < 0 && direction.z > 0 ||
-            //    inputHandler.Vertical > 0 && direction.z < 0)   // changing direction
-            //{
-            //    wheel.brakeTorque = breakForce;
-            //}
+          
         }
     }
 
     private void CheckWaypoints()
     {
-        if (DistanceToNextWaypoint() < nextPointMargin)
+        if (DistanceToNextWaypoint() < nextPointMargin) //замена чекпоинта на следующий
         {
             currentWaypoint = trackWaypoints.GetNextWaypoint(currentWaypoint, this);
             nextWaypoint = trackWaypoints.Waypoints[currentWaypoint];
@@ -106,7 +92,6 @@ public class VehicleController : MonoBehaviour
 
     public void AddLap()
     {
-        Debug.Log("Here");
         lapsFinished++;
     }
 
@@ -136,7 +121,7 @@ public class VehicleController : MonoBehaviour
         for(int i = 0; i < frontWheelsMeshes.Length; i++)
         {
             var wheel = frontWheelsMeshes[i];
-            frontWheelsColliders[i].GetWorldPose(out wheelPosition, out wheelRotation);
+            frontWheelsColliders[i].GetWorldPose(out wheelPosition, out wheelRotation); //движение модели за колайдером
             wheel.transform.rotation = wheelRotation;
             wheel.transform.position= wheelPosition;
         }

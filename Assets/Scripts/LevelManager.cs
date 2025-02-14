@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public int laps;
-    public int lapsLeft;
+    public int laps; //всего
+    public int lapsLeft; 
     [SerializeField] public int trackNumber;
-    [SerializeField] private float startCountdown;
+    [SerializeField] private float startCountdown; //секунды до старта
     [SerializeField] private Timer gameTimer;
     [SerializeField] private VehicleController[] vehicles;
 
@@ -18,7 +18,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TMP_Text bestTimeText;
     [SerializeField] private TMP_Text currentTimeText;
     [SerializeField] private TMP_Text lapsLeftText;
-
+    public GameObject finishText;
 
     private Timer countdownTimer;
     private bool gameStarted = false;
