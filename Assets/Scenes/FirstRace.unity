@@ -26242,8 +26242,16 @@ PrefabInstance:
       value: -11.65
       objectReference: {fileID: 0}
     - target: {fileID: 6603429893095213801, guid: 12e09cdf6ad48aa4e9cf5d9c8776b36c, type: 3}
+      propertyPath: downforce
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6603429893095213801, guid: 12e09cdf6ad48aa4e9cf5d9c8776b36c, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6603429893095213801, guid: 12e09cdf6ad48aa4e9cf5d9c8776b36c, type: 3}
+      propertyPath: steeringMaxAngle
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
